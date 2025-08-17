@@ -29,6 +29,14 @@ export class AuthController {
     return { message: 'Auth controller working' };
   }
 
+  @Get('profile')
+  @UseGuards(AuthGuard('jwt'))
+  async getProfile(@Req() req) {
+    const userId = req.user.userId;
+    const user = await this.usersService.findById(userId);
+    return { user };
+  }
+
   @Put('profile')
   @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(FileInterceptor('shopLogo'))
@@ -69,5 +77,11 @@ export class AuthController {
     } catch (error) {
       res.status(404).send('File not found');
     }
+  }
+
+  @Get('users/stats')
+  @UseGuards(AuthGuard('jwt'))
+  async getUserStats() {
+    return await this.usersService.getUserStats();
   }
 }

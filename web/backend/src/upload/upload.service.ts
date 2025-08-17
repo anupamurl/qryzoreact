@@ -8,7 +8,7 @@ export class UploadService {
   private gridFSBucket: GridFSBucket;
 
   constructor(@InjectConnection() private connection: Connection) {
-    this.gridFSBucket = new GridFSBucket(this.connection.db, {
+    this.gridFSBucket = new GridFSBucket(this.connection.db!, {
       bucketName: 'uploads'
     });
   }

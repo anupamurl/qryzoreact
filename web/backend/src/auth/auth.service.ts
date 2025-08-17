@@ -12,6 +12,10 @@ export class AuthService {
   ) {}
 
   async googleLogin(req: any) {
+    if (!req.user) {
+      throw new Error('No user data from Google');
+    }
+    
     const user = await this.usersService.findOrCreate(req.user);
     const payload = { email: user.email, sub: user._id };
     

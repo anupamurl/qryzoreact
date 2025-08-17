@@ -106,9 +106,7 @@ const Header = ({ user, logout }) => {
                 Login
               </button>
             )}
-            <button className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">
-              Generate QR
-            </button>
+
           </div>
         </div>
       </div>

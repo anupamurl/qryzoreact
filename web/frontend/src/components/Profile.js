@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const Profile = ({ user, onProfileUpdate }) => {
@@ -13,6 +13,40 @@ const Profile = ({ user, onProfileUpdate }) => {
   const [shopLogo, setShopLogo] = useState(null);
   const [logoPreview, setLogoPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [profileData, setProfileData] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const fetchProfile = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:3000/auth/profile', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        const result = await response.json();
+        setProfileData(result.user);
+        setFormData({
+          shopName: result.user.shopName || '',
+          address: result.user.address || '',
+          phone: result.user.phone || '',
+          city: result.user.city || '',
+          state: result.user.state || '',
+          zipCode: result.user.zipCode || ''
+        });
+        if (result.user.shopLogo) {
+          setLogoPreview(`http://localhost:3000/auth/file/${result.user.shopLogo}`);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch profile:', error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,6 +76,9 @@ const Profile = ({ user, onProfileUpdate }) => {
         const result = await response.json();
         localStorage.setItem('user', JSON.stringify(result.user));
         onProfileUpdate(result.user);
+        setProfileData(result.user);
+        setIsEditing(false);
+        setShopLogo(null);
       }
     } catch (error) {
       console.error('Profile update failed:', error);
@@ -75,13 +112,26 @@ const Profile = ({ user, onProfileUpdate }) => {
           className="bg-white rounded-lg shadow-lg p-8"
         >
           <div className="text-center mb-8">
-            {user?.picture && (
-              <img src={user.picture} alt={user.name} className="w-20 h-20 rounded-full mx-auto mb-4" />
+            {(user?.picture || profileData?.picture) && (
+              <img src={user?.picture || profileData?.picture} alt={user?.name || profileData?.name} className="w-20 h-20 rounded-full mx-auto mb-4" />
             )}
-            <h1 className="text-3xl font-bold text-gray-900">Complete Your Profile</h1>
-            <p className="text-gray-600 mt-2">Help us personalize your experience</p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              {profileData?.profileCompleted && !isEditing ? 'Your Profile' : 'Complete Your Profile'}
+            </h1>
+            <p className="text-gray-600 mt-2">
+              {profileData?.profileCompleted && !isEditing ? 'Manage your profile information' : 'Help us personalize your experience'}
+            </p>
+            {profileData?.profileCompleted && !isEditing && (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="mt-4 bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors"
+              >
+                Edit Profile
+              </button>
+            )}
           </div>
 
+          {(!profileData?.profileCompleted || isEditing) ? (
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Shop Name</label>
@@ -192,14 +242,77 @@ const Profile = ({ user, onProfileUpdate }) => {
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-primary-600 text-white py-3 px-4 rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
-            >
-              {loading ? 'Saving...' : 'Complete Profile'}
-            </button>
+            <div className="flex gap-4">
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex-1 bg-primary-600 text-white py-3 px-4 rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
+              >
+                {loading ? 'Saving...' : (profileData?.profileCompleted ? 'Update Profile' : 'Complete Profile')}
+              </button>
+              {isEditing && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsEditing(false);
+                    setFormData({
+                      shopName: profileData?.shopName || '',
+                      address: profileData?.address || '',
+                      phone: profileData?.phone || '',
+                      city: profileData?.city || '',
+                      state: profileData?.state || '',
+                      zipCode: profileData?.zipCode || ''
+                    });
+                    setShopLogo(null);
+                    setLogoPreview(profileData?.shopLogo ? `http://localhost:3000/auth/file/${profileData.shopLogo}` : null);
+                  }}
+                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
           </form>
+          ) : (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Shop Name</label>
+                  <p className="text-gray-900 font-medium">{profileData?.shopName || 'Not provided'}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                  <p className="text-gray-900">{profileData?.phone || 'Not provided'}</p>
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                  <p className="text-gray-900">{profileData?.address || 'Not provided'}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
+                  <p className="text-gray-900">{profileData?.city || 'Not provided'}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
+                  <p className="text-gray-900">{profileData?.state || 'Not provided'}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Zip Code</label>
+                  <p className="text-gray-900">{profileData?.zipCode || 'Not provided'}</p>
+                </div>
+              </div>
+              {profileData?.shopLogo && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Shop Logo</label>
+                  <img 
+                    src={`http://localhost:3000/auth/file/${profileData.shopLogo}`} 
+                    alt="Shop Logo" 
+                    className="w-24 h-24 object-cover rounded-lg border border-gray-200"
+                  />
+                </div>
+              )}
+            </div>
+          )}
         </motion.div>
       </div>
     </div>
