@@ -40,7 +40,14 @@ function App() {
   };
 
   if (loading) {
-    return <div className="min-h-screen bg-white flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="min-h-screen animated-gradient flex items-center justify-center">
+        <div className="glass rounded-2xl p-8 text-center">
+          <div className="animate-spin w-8 h-8 border-2 border-blue-400 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-white/80">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   // Handle login callback route
@@ -58,7 +65,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen animated-gradient">
       <Header user={user} logout={logout} />
       <div id="home"><Hero /></div>
       <div id="features"><Features /></div>

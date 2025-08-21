@@ -9,8 +9,19 @@ const Analytics = () => {
   ];
 
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 relative overflow-hidden">
+      <div className="absolute inset-0 gradient-bg"></div>
+      <motion.div
+        className="absolute inset-0 opacity-20"
+        animate={{
+          background: [
+            'radial-gradient(circle at 60% 40%, rgba(147, 51, 234, 0.4) 0%, transparent 50%)',
+            'radial-gradient(circle at 40% 60%, rgba(59, 130, 246, 0.4) 0%, transparent 50%)'
+          ]
+        }}
+        transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -18,10 +29,10 @@ const Analytics = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-            Real-time Analytics Dashboard
+          <h2 className="text-4xl lg:text-5xl font-black text-white mb-6">
+            Real-time <span className="neon-blue">Analytics</span> Dashboard
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-white/80 max-w-2xl mx-auto">
             Get insights into your QR code performance with detailed analytics
           </p>
         </motion.div>
@@ -35,14 +46,19 @@ const Analytics = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="bg-white p-6 rounded-xl shadow-sm border border-gray-100"
+              className="glass glass-hover p-6 rounded-2xl border border-white/10 group"
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="text-gray-600 text-sm font-medium">{stat.label}</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
+                  <p className="text-white/60 text-sm font-semibold uppercase tracking-wide">{stat.label}</p>
+                  <motion.p 
+                    className="text-3xl font-black text-white mt-2 group-hover:neon-blue transition-all duration-300"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    {stat.value}
+                  </motion.p>
                 </div>
-                <span className="text-green-600 text-sm font-medium bg-green-50 px-2 py-1 rounded">
+                <span className="text-green-400 text-sm font-bold bg-green-400/20 px-3 py-1 rounded-full border border-green-400/30">
                   {stat.change}
                 </span>
               </div>
@@ -56,14 +72,14 @@ const Analytics = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           viewport={{ once: true }}
-          className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100"
+          className="glass p-8 rounded-3xl border border-white/10 backdrop-blur-xl"
         >
-          <h3 className="text-lg font-semibold text-gray-900 mb-6">Scan Activity</h3>
-          <div className="h-64 bg-gray-50 rounded-xl flex items-end justify-center space-x-2 p-4">
+          <h3 className="text-2xl font-bold text-white mb-8 neon-purple">Scan Activity</h3>
+          <div className="h-64 glass rounded-2xl flex items-end justify-center space-x-2 p-6 border border-white/10">
             {Array.from({ length: 12 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-primary-500 rounded-t"
+                className="bg-gradient-to-t from-blue-500 to-purple-600 rounded-t shadow-lg"
                 style={{
                   height: `${Math.random() * 80 + 20}%`,
                   width: '20px'
@@ -71,7 +87,7 @@ const Analytics = () => {
               />
             ))}
           </div>
-          <div className="flex justify-between text-sm text-gray-500 mt-4">
+          <div className="flex justify-between text-sm text-white/60 mt-6 font-semibold">
             <span>Jan</span>
             <span>Dec</span>
           </div>

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 
 const Header = ({ user, logout }) => {
   const [activeSection, setActiveSection] = useState('home');
+  const [isScrolling, setIsScrolling] = useState(false);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -16,7 +17,13 @@ const Header = ({ user, logout }) => {
   };
 
   useEffect(() => {
+    let scrollTimeout;
+    
     const handleScroll = () => {
+      setIsScrolling(true);
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => setIsScrolling(false), 150);
+      
       const sections = ['home', 'features', 'analytics', 'pricing', 'testimonials'];
       const scrollPosition = window.scrollY + 100;
 
@@ -30,15 +37,24 @@ const Header = ({ user, logout }) => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+    };
   }, []);
 
   return (
     <motion.header 
-      className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm"
+      className="fixed top-0 w-full z-50 glass border-b border-white/10"
       initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6 }}
+      animate={{ 
+        y: 0,
+        x: isScrolling ? [0, -1, 1, -1, 1, 0] : 0
+      }}
+      transition={{ 
+        y: { duration: 0.6 },
+        x: { duration: 0.3, ease: "easeInOut" }
+      }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -50,64 +66,78 @@ const Header = ({ user, logout }) => {
 
           {/* Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <button 
+            <motion.button 
               onClick={() => scrollToSection('home')} 
-              className={`transition-colors ${activeSection === 'home' ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'}`}
+              className={`transition-all duration-300 font-medium ${activeSection === 'home' ? 'neon-blue' : 'text-white/80 hover:text-white hover:scale-105'}`}
+              whileHover={{ y: -2 }}
             >
               Home
-            </button>
-            <button 
+            </motion.button>
+            <motion.button 
               onClick={() => scrollToSection('features')} 
-              className={`transition-colors ${activeSection === 'features' ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'}`}
+              className={`transition-all duration-300 font-medium ${activeSection === 'features' ? 'neon-blue' : 'text-white/80 hover:text-white hover:scale-105'}`}
+              whileHover={{ y: -2 }}
             >
               Features
-            </button>
-            <button 
+            </motion.button>
+            <motion.button 
               onClick={() => scrollToSection('pricing')} 
-              className={`transition-colors ${activeSection === 'pricing' ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'}`}
+              className={`transition-all duration-300 font-medium ${activeSection === 'pricing' ? 'neon-blue' : 'text-white/80 hover:text-white hover:scale-105'}`}
+              whileHover={{ y: -2 }}
             >
               Pricing
-            </button>
-            <button 
+            </motion.button>
+            <motion.button 
               onClick={() => scrollToSection('analytics')} 
-              className={`transition-colors ${activeSection === 'analytics' ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'}`}
+              className={`transition-all duration-300 font-medium ${activeSection === 'analytics' ? 'neon-blue' : 'text-white/80 hover:text-white hover:scale-105'}`}
+              whileHover={{ y: -2 }}
             >
               Dashboard
-            </button>
-            <button 
+            </motion.button>
+            <motion.button 
               onClick={() => scrollToSection('testimonials')} 
-              className={`transition-colors ${activeSection === 'testimonials' ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'}`}
+              className={`transition-all duration-300 font-medium ${activeSection === 'testimonials' ? 'neon-blue' : 'text-white/80 hover:text-white hover:scale-105'}`}
+              whileHover={{ y: -2 }}
             >
               Contact
-            </button>
+            </motion.button>
           </nav>
 
           {/* CTA Buttons */}
           <div className="flex items-center space-x-4">
             {user ? (
               <>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3">
                   {user.picture && (
-                    <img src={user.picture} alt={user.name} className="w-8 h-8 rounded-full" />
+                    <img 
+                      src={user.picture} 
+                      alt={user.name} 
+                      className="w-8 h-8 rounded-full border border-white/20 object-cover" 
+                      crossOrigin="anonymous"
+                      referrerPolicy="no-referrer"
+                    />
                   )}
-                  <span className="text-gray-700">{user.name}</span>
+                  <span className="text-white font-medium">{user.name}</span>
                 </div>
-                <button 
+                <motion.button 
                   onClick={logout}
-                  className="text-gray-700 hover:text-primary-600 transition-colors"
+                  className="glass glass-hover px-4 py-2 rounded-lg text-white/80 hover:text-white font-medium"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   Logout
-                </button>
+                </motion.button>
               </>
             ) : (
-              <button 
+              <motion.button 
                 onClick={() => window.location.href = 'http://localhost:3000/auth/google'}
-                className="text-gray-700 hover:text-primary-600 transition-colors"
+                className="glass glass-hover px-6 py-2 rounded-lg text-white font-medium border border-blue-400/30 hover:border-blue-400/60"
+                whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)" }}
+                whileTap={{ scale: 0.95 }}
               >
                 Login
-              </button>
+              </motion.button>
             )}
-
           </div>
         </div>
       </div>
