@@ -4,17 +4,17 @@ import { motion } from 'framer-motion';
 const Features = () => {
   const features = [
     {
-      icon: '⚡',
+      image: './qr-generation.svg',
       title: 'Smart QR Generation',
       description: 'Create QR codes instantly with customizable designs, colors, and logos for your brand.'
     },
     {
-      icon: '📊',
+      image: './analytics.svg',
       title: 'Analytics & Tracking',
       description: 'Track scans, locations, devices, and user behavior with detailed real-time analytics.'
     },
     {
-      icon: '🎨',
+      image: './branding.svg',
       title: 'Custom Branding',
       description: 'Add your logo, customize colors, and create branded QR codes that match your identity.'
     }
@@ -61,10 +61,14 @@ const Features = () => {
               className="glass glass-hover p-8 rounded-3xl border border-white/10 transition-all duration-500 hover:-translate-y-2 group"
             >
               <motion.div 
-                className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300"
+                className="mb-6 group-hover:scale-110 transition-transform duration-300 flex justify-center"
                 whileHover={{ rotate: [0, -10, 10, 0] }}
               >
-                {feature.icon}
+                <img 
+                  src={feature.image} 
+                  alt={feature.title} 
+                  className="h-16 w-16 opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300"
+                />
               </motion.div>
               <h3 className="text-2xl font-bold text-white mb-4 group-hover:neon-blue transition-all duration-300">
                 {feature.title}

@@ -8,6 +8,16 @@ import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
 import LoginCallback from './components/LoginCallback';
 import Profile from './components/Profile';
+import MyBoard from './components/MyBoard';
+import Error404 from './components/Error404';
+import AboutUs from './components/AboutUs';
+import Contact from './components/Contact';
+import Careers from './components/Careers';
+import Blog from './components/Blog';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsOfService from './components/TermsOfService';
+import Documentation from './components/Documentation';
+import ApiDocs from './components/ApiDocs';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -62,6 +72,60 @@ function App() {
       return null;
     }
     return <Profile user={user} onProfileUpdate={handleProfileUpdate} />;
+  }
+
+  // Handle my-board route
+  if (window.location.pathname === '/my-board') {
+    if (!user) {
+      window.location.href = '/';
+      return null;
+    }
+    return <MyBoard user={user} logout={logout} />;
+  }
+
+  // Handle about route
+  if (window.location.pathname === '/about') {
+    return <AboutUs user={user} logout={logout} />;
+  }
+
+  // Handle contact route
+  if (window.location.pathname === '/contact') {
+    return <Contact user={user} logout={logout} />;
+  }
+
+  // Handle careers route
+  if (window.location.pathname === '/careers') {
+    return <Careers user={user} logout={logout} />;
+  }
+
+  // Handle blog route
+  if (window.location.pathname === '/blog') {
+    return <Blog user={user} logout={logout} />;
+  }
+
+  // Handle privacy route
+  if (window.location.pathname === '/privacy') {
+    return <PrivacyPolicy user={user} logout={logout} />;
+  }
+
+  // Handle terms route
+  if (window.location.pathname === '/terms') {
+    return <TermsOfService user={user} logout={logout} />;
+  }
+
+  // Handle docs route
+  if (window.location.pathname === '/docs') {
+    return <Documentation user={user} logout={logout} />;
+  }
+
+  // Handle api route
+  if (window.location.pathname === '/api') {
+    return <ApiDocs user={user} logout={logout} />;
+  }
+
+  // Handle 404 for unknown routes
+  if (window.location.pathname !== '/') {
+    return <Error404 />;
   }
 
   return (

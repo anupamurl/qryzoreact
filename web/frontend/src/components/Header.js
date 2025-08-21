@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import ProfileDropdown from './ProfileDropdown';
 
 const Header = ({ user, logout }) => {
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolling, setIsScrolling] = useState(false);
 
   const scrollToSection = (sectionId) => {
+    if (window.location.pathname !== '/') {
+      window.location.href = '/#' + sectionId;
+      return;
+    }
     const element = document.getElementById(sectionId);
     if (element) {
       const offsetTop = element.offsetTop - 80;
@@ -59,7 +64,7 @@ const Header = ({ user, logout }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
+          <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => window.location.href = '/'}>
             <img src="./cryzo.png" alt="Qryzo" className="h-8 w-auto mr-2" onError={(e) => e.target.style.display = 'none'} />
            
           </div>
@@ -67,7 +72,7 @@ const Header = ({ user, logout }) => {
           {/* Navigation */}
           <nav className="hidden md:flex space-x-8">
             <motion.button 
-              onClick={() => scrollToSection('home')} 
+              onClick={() => window.location.href = '/'} 
               className={`transition-all duration-300 font-medium ${activeSection === 'home' ? 'neon-blue' : 'text-white/80 hover:text-white hover:scale-105'}`}
               whileHover={{ y: -2 }}
             >
@@ -106,28 +111,7 @@ const Header = ({ user, logout }) => {
           {/* CTA Buttons */}
           <div className="flex items-center space-x-4">
             {user ? (
-              <>
-                <div className="flex items-center space-x-3">
-                  {user.picture && (
-                    <img 
-                      src={user.picture} 
-                      alt={user.name} 
-                      className="w-8 h-8 rounded-full border border-white/20 object-cover" 
-                      crossOrigin="anonymous"
-                      referrerPolicy="no-referrer"
-                    />
-                  )}
-                  <span className="text-white font-medium">{user.name}</span>
-                </div>
-                <motion.button 
-                  onClick={logout}
-                  className="glass glass-hover px-4 py-2 rounded-lg text-white/80 hover:text-white font-medium"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Logout
-                </motion.button>
-              </>
+              <ProfileDropdown user={user} logout={logout} />
             ) : (
               <motion.button 
                 onClick={() => window.location.href = 'http://localhost:3000/auth/google'}

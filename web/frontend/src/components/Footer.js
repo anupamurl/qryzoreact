@@ -36,18 +36,18 @@ const Footer = () => {
             <ul className="space-y-3 text-white/60">
               <li><motion.a href="#features" className="hover:text-white hover:neon-blue transition-all duration-300" whileHover={{ x: 5 }}>Features</motion.a></li>
               <li><motion.a href="#pricing" className="hover:text-white hover:neon-blue transition-all duration-300" whileHover={{ x: 5 }}>Pricing</motion.a></li>
-              <li><motion.a href="#docs" className="hover:text-white hover:neon-blue transition-all duration-300" whileHover={{ x: 5 }}>Documentation</motion.a></li>
-              <li><motion.a href="#api" className="hover:text-white hover:neon-blue transition-all duration-300" whileHover={{ x: 5 }}>API</motion.a></li>
+              <li><motion.a href="/docs" className="hover:text-white hover:neon-blue transition-all duration-300" whileHover={{ x: 5 }}>Documentation</motion.a></li>
+              <li><motion.a href="/api" className="hover:text-white hover:neon-blue transition-all duration-300" whileHover={{ x: 5 }}>API</motion.a></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-bold mb-6 text-white text-lg">Company</h4>
             <ul className="space-y-3 text-white/60">
-              <li><motion.a href="#about" className="hover:text-white hover:neon-purple transition-all duration-300" whileHover={{ x: 5 }}>About</motion.a></li>
-              <li><motion.a href="#contact" className="hover:text-white hover:neon-purple transition-all duration-300" whileHover={{ x: 5 }}>Contact</motion.a></li>
-              <li><motion.a href="#careers" className="hover:text-white hover:neon-purple transition-all duration-300" whileHover={{ x: 5 }}>Careers</motion.a></li>
-              <li><motion.a href="#blog" className="hover:text-white hover:neon-purple transition-all duration-300" whileHover={{ x: 5 }}>Blog</motion.a></li>
+              <li><motion.a href="/about" className="hover:text-white hover:neon-purple transition-all duration-300" whileHover={{ x: 5 }}>About</motion.a></li>
+              <li><motion.a href="/contact" className="hover:text-white hover:neon-purple transition-all duration-300" whileHover={{ x: 5 }}>Contact</motion.a></li>
+              <li><motion.a href="/careers" className="hover:text-white hover:neon-purple transition-all duration-300" whileHover={{ x: 5 }}>Careers</motion.a></li>
+              <li><motion.a href="/blog" className="hover:text-white hover:neon-purple transition-all duration-300" whileHover={{ x: 5 }}>Blog</motion.a></li>
             </ul>
           </div>
 
@@ -56,25 +56,32 @@ const Footer = () => {
             <h4 className="font-bold mb-6 text-white text-lg">Connect</h4>
             <div className="flex space-x-4">
               <motion.a 
-                href="#" 
+                href="https://www.instagram.com/qryzocom/" 
                 className="w-12 h-12 glass glass-hover rounded-xl flex items-center justify-center border border-white/10"
                 whileHover={{ scale: 1.1, boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)' }}
               >
-                <span className="text-white font-bold">𝕏</span>
+                <i className="fab fa-instagram text-white text-xl"></i>
               </motion.a>
               <motion.a 
-                href="#" 
+                href="https://x.com/qryzo16592" 
                 className="w-12 h-12 glass glass-hover rounded-xl flex items-center justify-center border border-white/10"
                 whileHover={{ scale: 1.1, boxShadow: '0 0 20px rgba(147, 51, 234, 0.5)' }}
               >
-                <span className="text-white font-bold">in</span>
+                <i className="fab fa-twitter text-white text-xl"></i>
               </motion.a>
               <motion.a 
-                href="#" 
+                href="https://www.facebook.com/profile.php?id=61579215006518" 
                 className="w-12 h-12 glass glass-hover rounded-xl flex items-center justify-center border border-white/10"
                 whileHover={{ scale: 1.1, boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)' }}
               >
-                <span className="text-white font-bold">gh</span>
+                <i className="fab fa-facebook text-white text-xl"></i>
+              </motion.a>
+              <motion.a 
+                href="https://www.linkedin.com/company/108150928/admin/page-posts/published/" 
+                className="w-12 h-12 glass glass-hover rounded-xl flex items-center justify-center border border-white/10"
+                whileHover={{ scale: 1.1, boxShadow: '0 0 20px rgba(147, 51, 234, 0.5)' }}
+              >
+                <i className="fab fa-linkedin text-white text-xl"></i>
               </motion.a>
             </div>
           </div>
@@ -87,14 +94,14 @@ const Footer = () => {
           </p>
           <div className="flex space-x-8 mt-4 md:mt-0">
             <motion.a 
-              href="#privacy" 
+              href="/privacy" 
               className="text-white/60 hover:text-white hover:neon-blue transition-all duration-300 font-medium"
               whileHover={{ y: -2 }}
             >
               Privacy Policy
             </motion.a>
             <motion.a 
-              href="#terms" 
+              href="/terms" 
               className="text-white/60 hover:text-white hover:neon-purple transition-all duration-300 font-medium"
               whileHover={{ y: -2 }}
             >
