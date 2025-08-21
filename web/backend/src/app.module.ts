@@ -13,9 +13,15 @@ import { RedirectAuthController } from './redirectauth.controller';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRootAsync({
-      useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGODB_URI'),
-      }),
+      useFactory: (configService: ConfigService) => {
+        const uri = configService.get<string>('MONGODB_URI');
+        console.log('MongoDB URI:', uri);
+        return {
+          uri,
+          retryAttempts: 5,
+          retryDelay: 1000,
+        };
+      },
       inject: [ConfigService],
     }),
     JwtModule.registerAsync({
